@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ public class SpringIterableConfigurationPropertySourceTests {
 		mapper.addFromPropertySource("key4", "my.key4");
 		SpringIterableConfigurationPropertySource adapter = new SpringIterableConfigurationPropertySource(
 				propertySource, mapper);
-		assertThat(adapter.iterator()).extracting(Object::toString)
+		assertThat(adapter.iterator()).toIterable().extracting(Object::toString)
 				.containsExactly("my.key1", "my.key2a", "my.key2b", "my.key4");
 	}
 

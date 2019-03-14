@@ -472,7 +472,7 @@ as shown in the following example:
 	import org.springframework.boot.autoconfigure.jdbc.*;
 	import org.springframework.context.annotation.*;
 
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 	public class MyConfiguration {
 	}
@@ -599,7 +599,7 @@ scan in your application:
 	import org.springframework.context.annotation.Configuration;
 	import org.springframework.context.annotation.Import;
 
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@Import({ MyConfig.class, MyAnotherConfig.class })
 	public class Application {
@@ -767,7 +767,7 @@ special classloader, then it is considered a "`production application`". If that
 apply to you (i.e. if you run your application from a container), consider excluding
 devtools or set the `-Dspring.devtools.restart.enabled=false` system property.
 
-TIP: Flagging the dependency as optional in Maven or using a custom`developmentOnly`
+TIP: Flagging the dependency as optional in Maven or using a custom `developmentOnly`
 configuration in Gradle  (as shown above) is a best practice that prevents devtools from
 being transitively applied to other modules that use your project.
 

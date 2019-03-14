@@ -992,7 +992,7 @@ You also need to list the properties classes to register in the
 
 [source,java,indent=0]
 ----
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	@EnableConfigurationProperties(AcmeProperties.class)
 	public class MyConfiguration {
 	}
@@ -1009,13 +1009,14 @@ name of the bean is used.
 The bean name in the example above is `acme-com.example.AcmeProperties`.
 ====
 
-Even if the preceding configuration creates a regular bean for `AcmeProperties`, we
-recommend that `@ConfigurationProperties` only deal with the environment and, in
-particular, does not inject other beans from the context. Having said that, the
+The preceding configuration creates a regular bean for `AcmeProperties`. We recommend that
+`@ConfigurationProperties` only deal with the environment and, in particular, does not
+inject other beans from the context. Keep in mind that the
 `@EnableConfigurationProperties` annotation is _also_ automatically applied to your
 project so that any _existing_ bean annotated with `@ConfigurationProperties` is
-configured from the `Environment`. You could shortcut `MyConfiguration` by making sure
-`AcmeProperties` is already a bean, as shown in the following example:
+configured from the `Environment`. Instead of annotating `MyConfiguration` with
+`@EnableConfigurationProperties(AcmeProperties.class)`, you could make `AcmeProperties`
+a bean, as shown in the following example:
 
 [source,java,indent=0]
 ----
@@ -1531,7 +1532,7 @@ example:
 
 [source,java,indent=0]
 ----
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	@Profile("production")
 	public class ProductionConfiguration {
 
@@ -2220,7 +2221,7 @@ If you need to add or customize converters, you can use Spring Boot's
 	import org.springframework.context.annotation.*;
 	import org.springframework.http.converter.*;
 
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	public class MyConfiguration {
 
 		@Bean
@@ -2712,7 +2713,7 @@ defined by registering a `WebMvcConfigurer` bean with a customized
 
 [source,java,indent=0]
 ----
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	public class MyConfiguration {
 
 		@Bean
@@ -2770,7 +2771,7 @@ actual handling of the requests, as shown in the following example:
 
 [source,java,indent=0]
 ----
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	public class RoutingConfiguration {
 
 		@Bean
@@ -2853,7 +2854,7 @@ component, as shown in the following example:
 ----
 	import org.springframework.boot.web.codec.CodecCustomizer;
 
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	public class MyConfiguration {
 
 		@Bean
@@ -4870,7 +4871,7 @@ follows:
 
 [source,java,indent=0]
 ----
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	public class SomeConfiguration {
 
 		@Bean(BeanNames.COUCHBASE_CUSTOM_CONVERSIONS)
@@ -5275,7 +5276,7 @@ Then you can define a `@Configuration` class to configure the extra `Bucket` and
 
 [source,java,indent=0]
 ----
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	public class CouchbaseCacheConfiguration {
 
 		private final Cluster cluster;
@@ -5625,7 +5626,7 @@ For instance, the following example exposes another factory that uses a specific
 
 [source,java,indent=0]
 ----
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	static class JmsConfiguration {
 
 		@Bean
@@ -5789,7 +5790,7 @@ specific `MessageConverter`:
 
 [source,java,indent=0]
 ----
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	static class RabbitConfiguration {
 
 		@Bean
@@ -6676,8 +6677,8 @@ specific slices>> of an application.
 
 TIP: If you are using JUnit 4, don't forget to also add `@RunWith(SpringRunner.class)` to
 your test, otherwise the annotations will be ignored. If you are using JUnit 5, there's no
-need to add the equivalent `@RunWith(SpringExtension)` as `@SpringBootTest` and the
-other `@…Test` annotations are already annotated with it.
+need to add the equivalent `@RunWith(SpringExtension.class)` as `@SpringBootTest` and
+the other `@…Test` annotations are already annotated with it.
 
 By default, `@SpringBootTest` will not start a server. You can use the `webEnvironment`
 attribute of `@SpringBootTest` to further refine how your tests run:
@@ -7866,7 +7867,7 @@ at the same level as your application, as shown in the following example:
 
 [source,java,indent=0]
 ----
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	@EnableBatchProcessing
 	public class BatchConfiguration { ... }
 ----
@@ -8175,8 +8176,8 @@ published jar. The file should list your configuration classes under the
 ====
 Auto-configurations must be loaded that way _only_. Make sure that they are defined in
 a specific package space and that they are never the target of component scanning.
-Futhermore, auto-configuration classes should not enable component scanning to find
-additional components. Specific `@Import`s should be used instead.
+Furthermore, auto-configuration classes should not enable component scanning to find
+additional components. Specific ``@Import``s should be used instead.
 ====
 
 You can use the
@@ -8231,13 +8232,13 @@ condition, as shown in the following example:
 
 [source,java,indent=0]
 ----
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	// Some conditions
 	public class MyAutoConfiguration {
 
 		// Auto-configured beans
 
-		@Configuration
+		@Configuration(proxyBeanMethods = false)
 		@ConditionalOnClass(EmbeddedAcmeService.class)
 		static class EmbeddedConfiguration {
 
@@ -8272,7 +8273,7 @@ method, as shown in the following example:
 
 [source,java,indent=0]
 ----
-	@Configuration
+	@Configuration(proxyBeanMethods = false)
 	public class MyAutoConfiguration {
 
 		@Bean
@@ -8708,7 +8709,7 @@ documentation] for more details. You also need to
 {junit5-documentation}/#writing-tests-test-instance-lifecycle-changing-default[switch test
 instance lifecycle to "per-class"].
 
-To mock Kotlin classes, https://mockk.io/[Mockk] is recommended. If you need the `Mockk`
+To mock Kotlin classes, https://mockk.io/[MockK] is recommended. If you need the `Mockk`
 equivalent of the Mockito specific
 <<boot-features-testing-spring-boot-applications-mocking-beans,`@MockBean` and `@SpyBean`
 annotations>>, you can use https://github.com/Ninja-Squad/springmockk[SpringMockK] which
